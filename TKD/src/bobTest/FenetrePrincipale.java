@@ -51,7 +51,6 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         File = new javax.swing.JMenu();
         Save = new javax.swing.JMenuItem();
         Exit = new javax.swing.JMenuItem();
-        Tactiques = new javax.swing.JMenu();
         MenuFrame = new javax.swing.JMenu();
         Frame1 = new javax.swing.JMenuItem();
         terrain = new javax.swing.JMenuItem();
@@ -90,9 +89,6 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         File.add(Exit);
 
         MenuBar.add(File);
-
-        Tactiques.setText("Tactiques");
-        MenuBar.add(Tactiques);
 
         MenuFrame.setText("Frame");
 
@@ -214,7 +210,6 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     private javax.swing.JMenuBar MenuBar;
     private javax.swing.JMenu MenuFrame;
     private javax.swing.JMenuItem Save;
-    private javax.swing.JMenu Tactiques;
     private javax.swing.JDesktopPane jDesktop;
     private javax.swing.JMenuItem terrain;
     // End of variables declaration//GEN-END:variables

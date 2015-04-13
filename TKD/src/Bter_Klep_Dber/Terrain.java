@@ -42,34 +42,34 @@ public class Terrain extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        boutonJoueur = new javax.swing.JButton();
+        boutonRoute = new javax.swing.JButton();
+        boutonFond = new javax.swing.JButton();
         jLayeredPane4 = new javax.swing.JLayeredPane();
-        jLayeredPane1 = new javax.swing.JLayeredPane();
+        terrainVide = new javax.swing.JLayeredPane();
         terrain = new javax.swing.JLayeredPane();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Joueur");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        boutonJoueur.setText("Joueur");
+        boutonJoueur.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                boutonJoueurActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Route");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        boutonRoute.setText("Route");
+        boutonRoute.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                boutonRouteActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Fond");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        boutonFond.setText("Fond");
+        boutonFond.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                boutonFondActionPerformed(evt);
             }
         });
 
@@ -79,20 +79,20 @@ public class Terrain extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(boutonJoueur, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(boutonRoute, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(boutonFond, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jButton1)
+                .addComponent(boutonJoueur)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(boutonRoute)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
+                .addComponent(boutonFond)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -102,14 +102,14 @@ public class Terrain extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jLayeredPane1Layout = new javax.swing.GroupLayout(jLayeredPane1);
-        jLayeredPane1.setLayout(jLayeredPane1Layout);
-        jLayeredPane1Layout.setHorizontalGroup(
-            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout terrainVideLayout = new javax.swing.GroupLayout(terrainVide);
+        terrainVide.setLayout(terrainVideLayout);
+        terrainVideLayout.setHorizontalGroup(
+            terrainVideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 655, Short.MAX_VALUE)
         );
-        jLayeredPane1Layout.setVerticalGroup(
-            jLayeredPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        terrainVideLayout.setVerticalGroup(
+            terrainVideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 450, Short.MAX_VALUE)
         );
 
@@ -135,15 +135,15 @@ public class Terrain extends javax.swing.JFrame {
             jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(terrain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jLayeredPane1))
+                .addComponent(terrainVide))
         );
         jLayeredPane4Layout.setVerticalGroup(
             jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(terrain)
             .addGroup(jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jLayeredPane1))
+                .addComponent(terrainVide))
         );
-        jLayeredPane4.setLayer(jLayeredPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jLayeredPane4.setLayer(terrainVide, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane4.setLayer(terrain, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -166,7 +166,7 @@ public class Terrain extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void boutonRouteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonRouteActionPerformed
         switch(etat){
             case INIT:
             etat = Etat.ROUTE;
@@ -180,9 +180,9 @@ public class Terrain extends javax.swing.JFrame {
             //Interdit
             break;
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_boutonRouteActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void boutonJoueurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonJoueurActionPerformed
         switch(etat){
             case INIT:
             etat = Etat.JOUEUR;
@@ -196,7 +196,7 @@ public class Terrain extends javax.swing.JFrame {
             activerJoueur();
             break;
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_boutonJoueurActionPerformed
 
     private void jLayeredPane4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLayeredPane4MouseClicked
         switch(etat){
@@ -212,7 +212,7 @@ public class Terrain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jLayeredPane4MouseClicked
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void boutonFondActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonFondActionPerformed
         switch(etat){
             case INIT:
                 if (fondActif){
@@ -245,18 +245,18 @@ public class Terrain extends javax.swing.JFrame {
                 }
                 break;
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_boutonFondActionPerformed
 
     
     
     void activerJoueur(){
-        jButton1.setEnabled(false);
-        jButton2.setEnabled(true);
+        boutonJoueur.setEnabled(false);
+        boutonRoute.setEnabled(true);
     }
     
     void activerRoute(){
-        jButton1.setEnabled(true);
-        jButton2.setEnabled(false);
+        boutonJoueur.setEnabled(true);
+        boutonRoute.setEnabled(false);
     } 
     
     /**
@@ -296,14 +296,14 @@ public class Terrain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton boutonFond;
+    private javax.swing.JButton boutonJoueur;
+    private javax.swing.JButton boutonRoute;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JLayeredPane jLayeredPane4;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLayeredPane terrain;
+    private javax.swing.JLayeredPane terrainVide;
     // End of variables declaration//GEN-END:variables
 
     public Etat getEtat() {
@@ -315,15 +315,15 @@ public class Terrain extends javax.swing.JFrame {
     }
 
     public JButton getjButton1() {
-        return jButton1;
+        return boutonJoueur;
     }
 
     public JButton getjButton2() {
-        return jButton2;
+        return boutonRoute;
     }
 
     public JButton getjButton3() {
-        return jButton3;
+        return boutonFond;
     }
 
     public JLabel getjLabel1() {
@@ -331,7 +331,7 @@ public class Terrain extends javax.swing.JFrame {
     }
 
     public JLayeredPane getjLayeredPane1() {
-        return jLayeredPane1;
+        return terrainVide;
     }
 
     public JLayeredPane getjLayeredPane4() {
