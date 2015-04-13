@@ -137,7 +137,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
             try {
                 
-                Rectangle rect = new Rectangle(t.getjLabel1().getX(),t.getjLabel1().getY(),t.getjLabel1().getWidth(),t.getjLabel1().getHeight());
+                Rectangle rect = new Rectangle(t.getX(),t.getY(),t.getWidth(),t.getHeight());
                 //t.getX(), t.getY(), t.getWidth(), t.getHeight()
                 BufferedImage capture = new Robot().createScreenCapture(rect.getBounds());
                 ImageIcon icon = new ImageIcon(capture);//this.getImage(t.getTerrain())
