@@ -5,6 +5,7 @@
  */
 package bobTest;
 
+import Bter_Klep_Dber.Terrain;
 import MyFrames.Frame1;
 import java.awt.AWTException;
 import java.awt.Component;
@@ -26,6 +27,7 @@ import javax.swing.JOptionPane;
  * @author Boris
  */
 public class FenetrePrincipale extends javax.swing.JFrame {
+    Terrain t = new Terrain();  
     Frame1 f = new Frame1();
 
     /**
@@ -52,6 +54,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         Tactiques = new javax.swing.JMenu();
         MenuFrame = new javax.swing.JMenu();
         Frame1 = new javax.swing.JMenuItem();
+        terrain = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,11 +62,11 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         jDesktop.setLayout(jDesktopLayout);
         jDesktopLayout.setHorizontalGroup(
             jDesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 850, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
         jDesktopLayout.setVerticalGroup(
             jDesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 429, Short.MAX_VALUE)
+            .addGap(0, 279, Short.MAX_VALUE)
         );
 
         File.setText("File");
@@ -101,6 +104,14 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         });
         MenuFrame.add(Frame1);
 
+        terrain.setText("Terrain");
+        terrain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                terrainActionPerformed(evt);
+            }
+        });
+        MenuFrame.add(terrain);
+
         MenuBar.add(MenuFrame);
 
         setJMenuBar(MenuBar);
@@ -125,11 +136,13 @@ public class FenetrePrincipale extends javax.swing.JFrame {
 
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
             try {
-                Rectangle rect = new Rectangle(f.getX(), f.getY(), f.getWidth(), f.getHeight());
-                BufferedImage capture = new Robot().createScreenCapture(rect);
-                ImageIcon icon = new ImageIcon(this.getImage(f.getjLabel1()));
+                
+                Rectangle rect = new Rectangle(t.getjLabel1().getX(),t.getjLabel1().getY(),t.getjLabel1().getWidth(),t.getjLabel1().getHeight());
+                //t.getX(), t.getY(), t.getWidth(), t.getHeight()
+                BufferedImage capture = new Robot().createScreenCapture(rect.getBounds());
+                ImageIcon icon = new ImageIcon(capture);//this.getImage(t.getTerrain())
                 f.getjLabel1().setIcon(icon);
-                ImageIO.write(capture, "png", new File("C:\\Users\\Boris\\Documents\\NetBeansProjects\\TKD\\TKD\\src\\Images\\stock"));
+                ImageIO.write(capture, "png", new File("C:\\Users\\Boris\\Documents\\NetBeansProjects\\TKD\\TKD\\src\\Images\\test.png"));
             } catch(HeadlessException | AWTException | IOException e) {
                 JOptionPane.showMessageDialog(this, e);
             }
@@ -139,6 +152,11 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         jDesktop.add(f);
         f.setVisible(true);
     }//GEN-LAST:event_Frame1ActionPerformed
+
+    private void terrainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terrainActionPerformed
+        t.setEnabled(true);
+        t.setVisible(true);
+    }//GEN-LAST:event_terrainActionPerformed
 
     
     public Image getImage(Component component){
@@ -198,5 +216,6 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     private javax.swing.JMenuItem Save;
     private javax.swing.JMenu Tactiques;
     private javax.swing.JDesktopPane jDesktop;
+    private javax.swing.JMenuItem terrain;
     // End of variables declaration//GEN-END:variables
 }
