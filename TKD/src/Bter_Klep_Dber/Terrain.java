@@ -262,7 +262,7 @@ public class Terrain extends javax.swing.JFrame {
     
     void paintPlayers(){
         for (Joueur joueur : joueurs) {
-            
+            joueur.paintComponent(getGraphics());
         }
     }
     

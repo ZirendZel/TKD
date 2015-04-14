@@ -22,7 +22,7 @@ public class Joueur extends JPanel {
     public Joueur(int x, int y) {
         this.x = x;
         this.y = y;
-        this.setSize(25,25);
+        this.setSize(16,16);
         poste = "";
     }
     
@@ -39,7 +39,7 @@ public class Joueur extends JPanel {
     @Override
     public void paintComponent(Graphics g){
         g.setColor(Color.RED);
-        g.fillOval(x, y, this.getWidth(), this.getHeight());
+        g.fillOval(x-4, y+15, this.getWidth(), this.getHeight());
     }
     
 }
