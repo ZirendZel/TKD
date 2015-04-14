@@ -1,9 +1,7 @@
 package Bter_Klep_Dber;
 
 
-import java.awt.Color;
-import java.awt.Graphics;
-import javax.swing.ImageIcon;
+import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -31,6 +29,8 @@ public class Terrain extends javax.swing.JFrame {
     
     public Etat etat = Etat.INIT;
     private boolean fondActif = true;
+    int x, y;
+    ArrayList<Joueur> joueurs = new ArrayList<>();
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -123,9 +123,7 @@ public class Terrain extends javax.swing.JFrame {
         );
         terrainLayout.setVerticalGroup(
             terrainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, terrainLayout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jLabel1)
         );
         terrain.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -139,9 +137,11 @@ public class Terrain extends javax.swing.JFrame {
         );
         jLayeredPane4Layout.setVerticalGroup(
             jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(terrain)
+            .addComponent(terrain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(jLayeredPane4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(terrainVide))
+                .addGroup(jLayeredPane4Layout.createSequentialGroup()
+                    .addComponent(terrainVide, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         jLayeredPane4.setLayer(terrainVide, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane4.setLayer(terrain, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -158,9 +158,7 @@ public class Terrain extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLayeredPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jLayeredPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -204,7 +202,10 @@ public class Terrain extends javax.swing.JFrame {
             //Interdit
             break;
             case JOUEUR:
-            //Il se passe quelque chose
+                Joueur joueur = new Joueur(evt.getX(),evt.getY());
+                System.out.println("X = " + evt.getX() + ", Y = " + evt.getY());
+                joueurs.add(joueur);
+                paintPlayers();
             break;
             case ROUTE:
             //Il se passe quelque chose
@@ -257,7 +258,13 @@ public class Terrain extends javax.swing.JFrame {
     void activerRoute(){
         boutonJoueur.setEnabled(true);
         boutonRoute.setEnabled(false);
-    } 
+    }
+    
+    void paintPlayers(){
+        for (Joueur joueur : joueurs) {
+            
+        }
+    }
     
     /**
      * @param args the command line arguments
