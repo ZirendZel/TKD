@@ -1,7 +1,10 @@
 package Bter_Klep_Dber;
 
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import static java.awt.event.KeyEvent.VK_ENTER;
 import java.awt.event.MouseEvent;
 import static java.lang.Math.sqrt;
 import java.util.ArrayList;
@@ -9,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,6 +32,12 @@ public class Terrain extends javax.swing.JFrame {
     public Terrain() {
         initComponents();
         this.setResizable(false);
+        nomDuJeu.setHorizontalAlignment(JTextField.CENTER);
+        nomDuJeu.setFont(new Font("Gras", Font.BOLD, 20));
+        nomDuJeu.requestFocusInWindow();
+        nomDuJeu.setBackground(new Color(0, 0, 0, 0));
+        nomDuJeu.setBorder(null);
+        nomDuJeu.setOpaque(false);
     }
     
     public Etat etat = Etat.INIT;
@@ -55,6 +65,7 @@ public class Terrain extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLayeredPane4 = new javax.swing.JLayeredPane();
         terrainVide = new javax.swing.JLayeredPane();
+        nomDuJeu = new javax.swing.JTextField();
         terrain = new javax.swing.JLayeredPane();
         jLabel1 = new javax.swing.JLabel();
 
@@ -145,16 +156,35 @@ public class Terrain extends javax.swing.JFrame {
             }
         });
 
+        nomDuJeu.setText("Nom Du Jeu");
+        nomDuJeu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                nomDuJeuMouseClicked(evt);
+            }
+        });
+        nomDuJeu.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nomDuJeuKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout terrainVideLayout = new javax.swing.GroupLayout(terrainVide);
         terrainVide.setLayout(terrainVideLayout);
         terrainVideLayout.setHorizontalGroup(
             terrainVideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 655, Short.MAX_VALUE)
+            .addGroup(terrainVideLayout.createSequentialGroup()
+                .addGap(255, 255, 255)
+                .addComponent(nomDuJeu, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(250, Short.MAX_VALUE))
         );
         terrainVideLayout.setVerticalGroup(
             terrainVideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 450, Short.MAX_VALUE)
+            .addGroup(terrainVideLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(nomDuJeu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(419, Short.MAX_VALUE))
         );
+        terrainVide.setLayer(nomDuJeu, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/AFField.jpg"))); // NOI18N
 
@@ -407,6 +437,18 @@ public class Terrain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jLayeredPane4MouseDragged
 
+    private void nomDuJeuKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nomDuJeuKeyPressed
+        if(evt.getKeyCode() == VK_ENTER) {
+            nomDuJeu.setFocusable(false);
+        }
+    }//GEN-LAST:event_nomDuJeuKeyPressed
+
+    private void nomDuJeuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nomDuJeuMouseClicked
+        nomDuJeu.setFocusable(true);
+        //Accorde le Focus dans la fenêtre:
+        nomDuJeu.requestFocusInWindow();
+    }//GEN-LAST:event_nomDuJeuMouseClicked
+
     
     void activerJoueur(){
         boutonJoueur.setEnabled(false);
@@ -499,6 +541,7 @@ public class Terrain extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLayeredPane jLayeredPane4;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JTextField nomDuJeu;
     private javax.swing.JLayeredPane terrain;
     private javax.swing.JLayeredPane terrainVide;
     // End of variables declaration//GEN-END:variables
