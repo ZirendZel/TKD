@@ -34,6 +34,7 @@ public class Terrain extends javax.swing.JFrame {
     private boolean fondActif = true;
     int x, y;
     ArrayList<Joueur> joueurs = new ArrayList<>();
+    Joueur enDeplacement = null;
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -48,6 +49,10 @@ public class Terrain extends javax.swing.JFrame {
         boutonJoueur = new javax.swing.JButton();
         boutonRoute = new javax.swing.JButton();
         boutonFond = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jLayeredPane4 = new javax.swing.JLayeredPane();
         terrainVide = new javax.swing.JLayeredPane();
         terrain = new javax.swing.JLayeredPane();
@@ -76,16 +81,32 @@ public class Terrain extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("CoordX:");
+
+        jLabel3.setText("X");
+
+        jLabel4.setText("CoordY:");
+
+        jLabel5.setText("Y");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(boutonFond, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(boutonRoute, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(boutonJoueur, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(boutonJoueur, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(boutonRoute, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(boutonFond, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -96,12 +117,31 @@ public class Terrain extends javax.swing.JFrame {
                 .addComponent(boutonRoute)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(boutonFond)
+                .addGap(76, 76, 76)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLayeredPane4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLayeredPane4MouseClicked(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jLayeredPane4MouseReleased(evt);
+            }
+        });
+        jLayeredPane4.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                jLayeredPane4MouseDragged(evt);
+            }
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jLayeredPane4MouseMoved(evt);
             }
         });
 
@@ -156,7 +196,8 @@ public class Terrain extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLayeredPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,14 +211,17 @@ public class Terrain extends javax.swing.JFrame {
     private void boutonRouteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonRouteActionPerformed
         switch(etat){
             case INIT:
-            etat = Etat.ROUTE;
-            activerRoute();
+                etat = Etat.ROUTE;
+                activerRoute();
             break;
             case JOUEUR:
-            etat = Etat.ROUTE;
-            activerRoute();
+                etat = Etat.ROUTE;
+                activerRoute();
             break;
             case ROUTE:
+            //Interdit
+            break;
+            case DRAG:
             //Interdit
             break;
         }
@@ -186,15 +230,18 @@ public class Terrain extends javax.swing.JFrame {
     private void boutonJoueurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonJoueurActionPerformed
         switch(etat){
             case INIT:
-            etat = Etat.JOUEUR;
-            activerJoueur();
+                etat = Etat.JOUEUR;
+                activerJoueur();
             break;
             case JOUEUR:
             //interdit
             break;
             case ROUTE:
-            etat = Etat.JOUEUR;
-            activerJoueur();
+                etat = Etat.JOUEUR;
+                activerJoueur();
+            break;
+            case DRAG:
+            //Interdit
             break;
         }
     }//GEN-LAST:event_boutonJoueurActionPerformed
@@ -207,13 +254,22 @@ public class Terrain extends javax.swing.JFrame {
                 //Interdit
                 break;
                 case JOUEUR:
-                    Joueur joueur = new Joueur(evt.getX(),evt.getY());
-                    System.out.println("X = " + evt.getX() + ", Y = " + evt.getY());
-                    joueurs.add(joueur);
-                    paintPlayers();
+                    enDeplacement = joueurProche(evt.getX(),evt.getY());
+                    if (enDeplacement == null){
+                        Joueur joueur = new Joueur(evt.getX(),evt.getY());
+                        System.out.println("X = " + evt.getX() + ", Y = " + evt.getY());
+                        joueurs.add(joueur);
+                        paintPlayers();
+                    }
+                    else {
+                        etat = Etat.DRAG;
+                    }
                 break;
                 case ROUTE:
                 //Il se passe quelque chose
+                break;
+                case DRAG:
+                //Interdit
                 break;
             }
         }
@@ -230,6 +286,9 @@ public class Terrain extends javax.swing.JFrame {
                 case ROUTE:
                 //Il se passe quelque chose
                 break;
+                case DRAG:
+                //Interdit
+                break;
             }
         }
     }//GEN-LAST:event_jLayeredPane4MouseClicked
@@ -240,36 +299,114 @@ public class Terrain extends javax.swing.JFrame {
                 if (fondActif){
                     fondActif = false;
                     terrain.setVisible(fondActif);
+                    paintPlayers();
                 }
                 else{
                     fondActif = true;
                     terrain.setVisible(fondActif);
+                    paintPlayers();
                 }
                 break;
             case JOUEUR:
                 if (fondActif){
                     fondActif = false;
                     terrain.setVisible(fondActif);
+                    paintPlayers();
                 }
                 else{
                     fondActif = true;
                     terrain.setVisible(fondActif);
+                    paintPlayers();
                 }
                 break;
             case ROUTE:
                 if (fondActif){
                     fondActif = false;
                     terrain.setVisible(fondActif);
+                    paintPlayers();
                 }
                 else{
                     fondActif = true;
                     terrain.setVisible(fondActif);
+                    paintPlayers();
                 }
+                break;
+            case DRAG:
+                //Impossible
                 break;
         }
     }//GEN-LAST:event_boutonFondActionPerformed
 
-    
+    private void jLayeredPane4MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLayeredPane4MouseMoved
+        switch(etat){
+            case INIT:
+                etat = Etat.INIT;
+                jLabel3.setText("" + evt.getX());
+                jLabel5.setText("" + evt.getY());
+                break;
+            case JOUEUR:
+                etat = Etat.JOUEUR;
+                jLabel3.setText("" + evt.getX());
+                jLabel5.setText("" + evt.getY());
+                break;
+            case ROUTE:
+                etat = Etat.ROUTE;
+                jLabel3.setText("" + evt.getX());
+                jLabel5.setText("" + evt.getY());
+                break;
+            case DRAG:
+                jLabel3.setText("" + evt.getX());
+                jLabel5.setText("" + evt.getY());
+                enDeplacement.setCoord(evt.getX(),evt.getY());
+                //paintPlayers();
+                etat = Etat.DRAG;
+                break;
+        }
+    }//GEN-LAST:event_jLayeredPane4MouseMoved
+
+    private void jLayeredPane4MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLayeredPane4MouseReleased
+        switch(etat){
+            case INIT:
+                etat = Etat.INIT;
+                break;
+            case JOUEUR:
+                etat = Etat.JOUEUR;
+                break;
+            case ROUTE:
+                etat = Etat.ROUTE;
+                break;
+            case DRAG:
+                enDeplacement.setCoord(evt.getX(),evt.getY());
+                enDeplacement.selected = false;
+                enDeplacement = null;
+                paintPlayers();
+                etat = Etat.JOUEUR;
+                break;
+        }
+    }//GEN-LAST:event_jLayeredPane4MouseReleased
+
+    private void jLayeredPane4MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLayeredPane4MouseDragged
+        switch(etat){
+            case INIT:
+                etat = Etat.INIT;
+                break;
+            case JOUEUR:
+                etat = Etat.JOUEUR;
+                break;
+            case ROUTE:
+                etat = Etat.ROUTE;
+                break;
+            case DRAG:
+                jLabel3.setText("" + evt.getX());
+                jLabel5.setText("" + evt.getY());
+                repaint();
+                etat = Etat.DRAG;
+                enDeplacement.setCoord(evt.getX(),evt.getY());
+                paintPlayers();
+                break;
+        }
+    }//GEN-LAST:event_jLayeredPane4MouseDragged
+
     
     void activerJoueur(){
         boutonJoueur.setEnabled(false);
@@ -283,12 +420,13 @@ public class Terrain extends javax.swing.JFrame {
     
     void paintPlayers(){
         for (Joueur joueur : joueurs) {
+            joueur.repaint();
             joueur.selected = false;
             joueur.paintComponent(getGraphics());
         }
     }
     
-    void joueurProche(int x, int y){
+    Joueur joueurProche(int x, int y){
         double dist = 10000;
         Joueur proche = null;
         Graphics g = getGraphics();
@@ -298,17 +436,19 @@ public class Terrain extends javax.swing.JFrame {
             double distTmp = sqrt((joueur.x-x)*(joueur.x-x)+((joueur.y-y)*(joueur.y-y)));
             if (distTmp < dist){
                 dist = distTmp;
-                if (dist < 20){
+                if (dist < 15){
                     proche = joueur;
                 }
             }
         }
         if (proche == null){
             System.out.println("Pas de joueur proche du clic");
+            return null;
         }
         else {
             proche.selected = true;
             proche.paintComponent(g);
+            return proche;
         }
     }
     
@@ -353,6 +493,10 @@ public class Terrain extends javax.swing.JFrame {
     private javax.swing.JButton boutonJoueur;
     private javax.swing.JButton boutonRoute;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLayeredPane jLayeredPane4;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLayeredPane terrain;

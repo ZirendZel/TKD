@@ -49,5 +49,10 @@ public class Joueur extends JPanel {
             g.fillOval(x-4, y+15, this.getWidth(), this.getHeight());
         }
     }
+    
+    public void setCoord(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
         
 }
