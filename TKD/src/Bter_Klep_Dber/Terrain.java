@@ -4,6 +4,7 @@ package Bter_Klep_Dber;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.VK_ENTER;
 import java.awt.event.MouseEvent;
 import static java.lang.Math.sqrt;
@@ -306,18 +307,48 @@ public class Terrain extends javax.swing.JFrame {
                     System.out.println("X = " + evt.getX() + ", Y = " + evt.getY());
                     joueurs.add(joueur);
                     paintPlayers();
+                    paintRoutes();
                 break;
                 case ROUTE:
                     //Il se passe quelque chose
                     // Initialise la route
                     // TO DO : Clique sur un joueur
                     routeTMP = new Route(evt.getX(),evt.getY());
+                    routeTMP.dessinerGhost(getGraphics(), evt.getX(), evt.getY());
                     etat = Etat.CLICROUTE;
+                    paintRoutes();
                 break;
                 case CLICROUTE:
                     // Les autres clics prolongent la route qu'on créé
                     etat = Etat.CLICROUTE;
                     routeTMP.ajouterPoint(getGraphics(), evt.getX(),evt.getY());
+                    routeTMP.dessinerGhost(getGraphics(), evt.getX(), evt.getY());
+                    paintRoutes();
+                break;
+                case DRAG:
+                //Interdit
+                break;
+            }
+        }
+        else if (evt.getButton() == MouseEvent.BUTTON2) {
+            // clic milieu / molette
+            switch(etat){
+                case INIT:
+                //Interdit
+                break;
+                case JOUEUR:
+                    // interdit
+                break;
+                case ROUTE:
+                //Il se passe quelque chose
+                break;
+                case CLICROUTE:
+                    System.out.println("jLayeredPane4KeyPressed");
+                    routeTMP.ghost = null;
+                    routes.add(routeTMP);
+                    routeTMP = null;
+                    etat = Etat.ROUTE;
+                    paintRoutes();
                 break;
                 case DRAG:
                 //Interdit
@@ -334,6 +365,7 @@ public class Terrain extends javax.swing.JFrame {
                     // Le joueur le proche proche du clic droit est sélectionné
                     System.out.println("X = " + evt.getX() + ", Y = " + evt.getY());
                     joueurProche(evt.getX(),evt.getY());
+                    paintRoutes();
                 break;
                 case ROUTE:
                 //Il se passe quelque chose
@@ -341,6 +373,12 @@ public class Terrain extends javax.swing.JFrame {
                 case CLICROUTE:
                     etat = Etat.CLICROUTE;
                     routeTMP.retirerPoint(getGraphics());
+                    if (routeTMP.routePoints.isEmpty()) {
+                        etat = Etat.ROUTE;
+                    } else {
+                        routeTMP.dessinerGhost(getGraphics(), evt.getX(), evt.getY());
+                    }
+                    paintRoutes();
                 case DRAG:
                 //Interdit
                 break;
@@ -418,6 +456,7 @@ public class Terrain extends javax.swing.JFrame {
                 enDeplacement.selected = false;
                 enDeplacement = null;
                 paintPlayers();
+                paintRoutes();
                 etat = Etat.JOUEUR;
                 break;
         }
@@ -440,6 +479,12 @@ public class Terrain extends javax.swing.JFrame {
                 etat = Etat.ROUTE;
                 jLabel3.setText("" + evt.getX());
                 jLabel5.setText("" + evt.getY());
+                break;
+            case CLICROUTE:
+                etat = Etat.CLICROUTE;
+                super.repaint();
+                routeTMP.dessinerGhost(getGraphics(), evt.getX(), evt.getY());
+                paintPlayers();
                 break;
             case DRAG:
                 jLabel3.setText("" + evt.getX());
@@ -488,12 +533,7 @@ public class Terrain extends javax.swing.JFrame {
     }//GEN-LAST:event_jLayeredPane4MousePressed
 
     private void jLayeredPane4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLayeredPane4KeyPressed
-        if(evt.getKeyCode() == VK_ENTER) {
-            nomDuJeu.setFocusable(false);
-            routes.add(routeTMP);
-            routeTMP = null;
-            etat = Etat.ROUTE;
-        }
+        // TO DELETE
     }//GEN-LAST:event_jLayeredPane4KeyPressed
 
     
@@ -514,6 +554,15 @@ public class Terrain extends javax.swing.JFrame {
             joueur.repaint();
             joueur.selected = false;
             joueur.paintComponent(getGraphics());
+        }
+    }
+    
+    void paintRoutes(){
+        // Pour chaque joueur, on dit qu'ils ne sont pas sélectionnés
+        // et on les peint avec paintComponent
+        for (Route route : routes) {
+            route.repaint();
+            route.paintComponent(getGraphics());
         }
     }
     
