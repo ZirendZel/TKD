@@ -11,5 +11,5 @@ package Bter_Klep_Dber;
  * @author Zirend
  */
 public enum Etat {
-    INIT, JOUEUR, ROUTE, DRAG;
+    INIT, JOUEUR, ROUTE, DRAG, CLICROUTE;
 }

@@ -38,6 +38,8 @@ public class Terrain extends javax.swing.JFrame {
         nomDuJeu.setBackground(new Color(0, 0, 0, 0));
         nomDuJeu.setBorder(null);
         nomDuJeu.setOpaque(false);
+        
+        routeTMP = null;
     }
     
     public Etat etat = Etat.INIT;
@@ -48,6 +50,10 @@ public class Terrain extends javax.swing.JFrame {
     ArrayList<Joueur> joueurs = new ArrayList<>();
     // Pas de joueur en train de se faire déplacer
     Joueur enDeplacement = null;
+    
+    // Liste des routes + la route courante en création
+    ArrayList<Route> routes = new ArrayList<>();
+    Route routeTMP;
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -143,14 +149,14 @@ public class Terrain extends javax.swing.JFrame {
         );
 
         jLayeredPane4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jLayeredPane4MouseReleased(evt);
+            }
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLayeredPane4MouseClicked(evt);
             }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jLayeredPane4MousePressed(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jLayeredPane4MouseReleased(evt);
             }
         });
         jLayeredPane4.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -159,6 +165,11 @@ public class Terrain extends javax.swing.JFrame {
             }
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 jLayeredPane4MouseMoved(evt);
+            }
+        });
+        jLayeredPane4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jLayeredPane4KeyPressed(evt);
             }
         });
 
@@ -298,6 +309,15 @@ public class Terrain extends javax.swing.JFrame {
                 break;
                 case ROUTE:
                     //Il se passe quelque chose
+                    // Initialise la route
+                    // TO DO : Clique sur un joueur
+                    routeTMP = new Route(evt.getX(),evt.getY());
+                    etat = Etat.CLICROUTE;
+                break;
+                case CLICROUTE:
+                    // Les autres clics prolongent la route qu'on créé
+                    etat = Etat.CLICROUTE;
+                    routeTMP.ajouterPoint(getGraphics(), evt.getX(),evt.getY());
                 break;
                 case DRAG:
                 //Interdit
@@ -318,6 +338,9 @@ public class Terrain extends javax.swing.JFrame {
                 case ROUTE:
                 //Il se passe quelque chose
                 break;
+                case CLICROUTE:
+                    etat = Etat.CLICROUTE;
+                    routeTMP.retirerPoint(getGraphics());
                 case DRAG:
                 //Interdit
                 break;
@@ -463,6 +486,15 @@ public class Terrain extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jLayeredPane4MousePressed
+
+    private void jLayeredPane4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLayeredPane4KeyPressed
+        if(evt.getKeyCode() == VK_ENTER) {
+            nomDuJeu.setFocusable(false);
+            routes.add(routeTMP);
+            routeTMP = null;
+            etat = Etat.ROUTE;
+        }
+    }//GEN-LAST:event_jLayeredPane4KeyPressed
 
     
     void activerJoueur(){
