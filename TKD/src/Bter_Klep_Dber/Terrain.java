@@ -284,19 +284,13 @@ public class Terrain extends javax.swing.JFrame {
                 //Interdit
                 break;
                 case JOUEUR:
-                    enDeplacement = joueurProche(evt.getX(),evt.getY());
-                    if (enDeplacement == null){
-                        Joueur joueur = new Joueur(evt.getX(),evt.getY());
-                        System.out.println("X = " + evt.getX() + ", Y = " + evt.getY());
-                        joueurs.add(joueur);
-                        paintPlayers();
-                    }
-                    else {
-                        etat = Etat.DRAG;
-                    }
+                    Joueur joueur = new Joueur(evt.getX(),evt.getY());
+                    System.out.println("X = " + evt.getX() + ", Y = " + evt.getY());
+                    joueurs.add(joueur);
+                    paintPlayers();
                 break;
                 case ROUTE:
-                //Il se passe quelque chose
+                    //Il se passe quelque chose
                 break;
                 case DRAG:
                 //Interdit
@@ -368,30 +362,7 @@ public class Terrain extends javax.swing.JFrame {
     }//GEN-LAST:event_boutonFondActionPerformed
 
     private void jLayeredPane4MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLayeredPane4MouseMoved
-        switch(etat){
-            case INIT:
-                etat = Etat.INIT;
-                jLabel3.setText("" + evt.getX());
-                jLabel5.setText("" + evt.getY());
-                break;
-            case JOUEUR:
-                etat = Etat.JOUEUR;
-                jLabel3.setText("" + evt.getX());
-                jLabel5.setText("" + evt.getY());
-                break;
-            case ROUTE:
-                etat = Etat.ROUTE;
-                jLabel3.setText("" + evt.getX());
-                jLabel5.setText("" + evt.getY());
-                break;
-            case DRAG:
-                jLabel3.setText("" + evt.getX());
-                jLabel5.setText("" + evt.getY());
-                enDeplacement.setCoord(evt.getX(),evt.getY());
-                //paintPlayers();
-                etat = Etat.DRAG;
-                break;
-        }
+        jLayeredPane4MouseDragged(evt);
     }//GEN-LAST:event_jLayeredPane4MouseMoved
 
     private void jLayeredPane4MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLayeredPane4MouseReleased
@@ -419,12 +390,18 @@ public class Terrain extends javax.swing.JFrame {
         switch(etat){
             case INIT:
                 etat = Etat.INIT;
+                jLabel3.setText("" + evt.getX());
+                jLabel5.setText("" + evt.getY());
                 break;
             case JOUEUR:
                 etat = Etat.JOUEUR;
+                jLabel3.setText("" + evt.getX());
+                jLabel5.setText("" + evt.getY());
                 break;
             case ROUTE:
                 etat = Etat.ROUTE;
+                jLabel3.setText("" + evt.getX());
+                jLabel5.setText("" + evt.getY());
                 break;
             case DRAG:
                 jLabel3.setText("" + evt.getX());
@@ -469,7 +446,7 @@ public class Terrain extends javax.swing.JFrame {
     }
     
     Joueur joueurProche(int x, int y){
-        double dist = 10000;
+        double dist = 15;
         Joueur proche = null;
         Graphics g = getGraphics();
         for (Joueur joueur : joueurs) {
