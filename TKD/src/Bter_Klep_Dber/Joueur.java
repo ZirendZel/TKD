@@ -18,10 +18,12 @@ import javax.swing.JPanel;
 public class Joueur extends JPanel {
     String poste;
     int x, y;
+    boolean selected;
     
     public Joueur(int x, int y) {
         this.x = x;
         this.y = y;
+        selected = false;
         this.setSize(16,16);
         poste = "";
     }
@@ -38,8 +40,14 @@ public class Joueur extends JPanel {
     
     @Override
     public void paintComponent(Graphics g){
-        g.setColor(Color.RED);
-        g.fillOval(x-4, y+15, this.getWidth(), this.getHeight());
+        if (!selected){
+            g.setColor(Color.RED);
+            g.fillOval(x-4, y+15, this.getWidth(), this.getHeight());
+        }
+        else {
+            g.setColor(Color.BLUE);
+            g.fillOval(x-4, y+15, this.getWidth(), this.getHeight());
+        }
     }
-    
+        
 }

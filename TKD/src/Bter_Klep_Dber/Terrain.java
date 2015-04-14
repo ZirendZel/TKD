@@ -1,6 +1,9 @@
 package Bter_Klep_Dber;
 
 
+import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import static java.lang.Math.sqrt;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -197,19 +200,37 @@ public class Terrain extends javax.swing.JFrame {
     }//GEN-LAST:event_boutonJoueurActionPerformed
 
     private void jLayeredPane4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLayeredPane4MouseClicked
-        switch(etat){
-            case INIT:
-            //Interdit
-            break;
-            case JOUEUR:
-                Joueur joueur = new Joueur(evt.getX(),evt.getY());
-                System.out.println("X = " + evt.getX() + ", Y = " + evt.getY());
-                joueurs.add(joueur);
-                paintPlayers();
-            break;
-            case ROUTE:
-            //Il se passe quelque chose
-            break;
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            // Clic gauche
+            switch(etat){
+                case INIT:
+                //Interdit
+                break;
+                case JOUEUR:
+                    Joueur joueur = new Joueur(evt.getX(),evt.getY());
+                    System.out.println("X = " + evt.getX() + ", Y = " + evt.getY());
+                    joueurs.add(joueur);
+                    paintPlayers();
+                break;
+                case ROUTE:
+                //Il se passe quelque chose
+                break;
+            }
+        }
+        else if (evt.getButton() == MouseEvent.BUTTON3) {
+            // clic droit
+            switch(etat){
+                case INIT:
+                //Interdit
+                break;
+                case JOUEUR:
+                    System.out.println("X = " + evt.getX() + ", Y = " + evt.getY());
+                    joueurProche(evt.getX(),evt.getY());
+                break;
+                case ROUTE:
+                //Il se passe quelque chose
+                break;
+            }
         }
     }//GEN-LAST:event_jLayeredPane4MouseClicked
 
@@ -262,7 +283,32 @@ public class Terrain extends javax.swing.JFrame {
     
     void paintPlayers(){
         for (Joueur joueur : joueurs) {
+            joueur.selected = false;
             joueur.paintComponent(getGraphics());
+        }
+    }
+    
+    void joueurProche(int x, int y){
+        double dist = 10000;
+        Joueur proche = null;
+        Graphics g = getGraphics();
+        for (Joueur joueur : joueurs) {
+            joueur.selected = false;
+            joueur.paintComponent(g);
+            double distTmp = sqrt((joueur.x-x)*(joueur.x-x)+((joueur.y-y)*(joueur.y-y)));
+            if (distTmp < dist){
+                dist = distTmp;
+                if (dist < 20){
+                    proche = joueur;
+                }
+            }
+        }
+        if (proche == null){
+            System.out.println("Pas de joueur proche du clic");
+        }
+        else {
+            proche.selected = true;
+            proche.paintComponent(g);
         }
     }
     
@@ -351,5 +397,5 @@ public class Terrain extends javax.swing.JFrame {
 
     public JLayeredPane getTerrain() {
         return terrain;
-    }
+    }    
 }
