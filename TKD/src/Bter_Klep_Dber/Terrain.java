@@ -146,6 +146,9 @@ public class Terrain extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLayeredPane4MouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLayeredPane4MousePressed(evt);
+            }
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 jLayeredPane4MouseReleased(evt);
             }
@@ -438,6 +441,28 @@ public class Terrain extends javax.swing.JFrame {
         //Accorde le Focus dans la fenêtre:
         nomDuJeu.requestFocusInWindow();
     }//GEN-LAST:event_nomDuJeuMouseClicked
+
+    private void jLayeredPane4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLayeredPane4MousePressed
+        if (evt.getButton() == MouseEvent.BUTTON1) {
+            // Clic gauche
+            switch(etat){
+                case INIT:
+                //Interdit
+                break;
+                case JOUEUR:
+                    enDeplacement = joueurProche(evt.getX(),evt.getY());
+                    if (enDeplacement != null)
+                        etat = Etat.DRAG;
+                break;
+                case ROUTE:
+                    //Il se passe quelque chose
+                break;
+                case DRAG:
+                //Interdit
+                break;
+            }
+        }
+    }//GEN-LAST:event_jLayeredPane4MousePressed
 
     
     void activerJoueur(){
