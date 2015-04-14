@@ -17,8 +17,11 @@ import javax.swing.JPanel;
  */
 public class Joueur extends JPanel {
     String poste;
+    int x, y;
     
-    public Joueur() {
+    public Joueur(int x, int y) {
+        this.x = x;
+        this.y = y;
         this.setSize(25,25);
         poste = "";
     }
@@ -36,7 +39,7 @@ public class Joueur extends JPanel {
     @Override
     public void paintComponent(Graphics g){
         g.setColor(Color.RED);
-        g.fillOval(0, 0, this.getWidth(), this.getHeight());
+        g.fillOval(x, y, this.getWidth(), this.getHeight());
     }
     
 }
