@@ -41,9 +41,12 @@ public class Terrain extends javax.swing.JFrame {
     }
     
     public Etat etat = Etat.INIT;
+    // Fond terrain affiché
     private boolean fondActif = true;
     int x, y;
+    // Liste des joueurs
     ArrayList<Joueur> joueurs = new ArrayList<>();
+    // Pas de joueur en train de se faire déplacer
     Joueur enDeplacement = null;
     
     /**
@@ -284,6 +287,7 @@ public class Terrain extends javax.swing.JFrame {
                 //Interdit
                 break;
                 case JOUEUR:
+                    // Création du nouveau joueur, ajout dans la liste et dessiné
                     Joueur joueur = new Joueur(evt.getX(),evt.getY());
                     System.out.println("X = " + evt.getX() + ", Y = " + evt.getY());
                     joueurs.add(joueur);
@@ -304,6 +308,7 @@ public class Terrain extends javax.swing.JFrame {
                 //Interdit
                 break;
                 case JOUEUR:
+                    // Le joueur le proche proche du clic droit est sélectionné
                     System.out.println("X = " + evt.getX() + ", Y = " + evt.getY());
                     joueurProche(evt.getX(),evt.getY());
                 break;
@@ -319,6 +324,9 @@ public class Terrain extends javax.swing.JFrame {
 
     private void boutonFondActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boutonFondActionPerformed
         switch(etat){
+            // Dans tous les cas :
+            // Si le fond est actif, on le desactive, et on le rend invisible
+            // L'inverse sinon
             case INIT:
                 if (fondActif){
                     fondActif = false;
@@ -377,6 +385,9 @@ public class Terrain extends javax.swing.JFrame {
                 etat = Etat.ROUTE;
                 break;
             case DRAG:
+                // En relachant, on change les coordonnées du joueurs
+                // On le déselectionne
+                // On repeint
                 enDeplacement.setCoord(evt.getX(),evt.getY());
                 enDeplacement.selected = false;
                 enDeplacement = null;
@@ -388,6 +399,7 @@ public class Terrain extends javax.swing.JFrame {
 
     private void jLayeredPane4MouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLayeredPane4MouseDragged
         switch(etat){
+            // Pour tous : on affiche les coordonnées du curseurs
             case INIT:
                 etat = Etat.INIT;
                 jLabel3.setText("" + evt.getX());
@@ -406,6 +418,7 @@ public class Terrain extends javax.swing.JFrame {
             case DRAG:
                 jLabel3.setText("" + evt.getX());
                 jLabel5.setText("" + evt.getY());
+                // On dessine les joueurs à chaque nouveau déplacement
                 repaint();
                 etat = Etat.DRAG;
                 enDeplacement.setCoord(evt.getX(),evt.getY());
@@ -438,6 +451,8 @@ public class Terrain extends javax.swing.JFrame {
     }
     
     void paintPlayers(){
+        // Pour chaque joueur, on dit qu'ils ne sont pas sélectionnés
+        // et on les peint avec paintComponent
         for (Joueur joueur : joueurs) {
             joueur.repaint();
             joueur.selected = false;
@@ -446,29 +461,36 @@ public class Terrain extends javax.swing.JFrame {
     }
     
     Joueur joueurProche(int x, int y){
+        // Par défaut, la distance est 15 (histoire de ne pas attraper un joueur de trop loin)
         double dist = 15;
+        // Par défaut, on renvoie un joueur = null, on n'en trouve pas d'assez près
         Joueur proche = null;
         Graphics g = getGraphics();
+        // Pour chaque joueur, on les déselectionne, on les repeint
         for (Joueur joueur : joueurs) {
             joueur.selected = false;
             joueur.paintComponent(g);
+            // On fait la distance euclidienne
             double distTmp = sqrt((joueur.x-x)*(joueur.x-x)+((joueur.y-y)*(joueur.y-y)));
+            // Si cette distance euclidienne est plus petite que la distance la plus petite précédente :
             if (distTmp < dist){
+                // On conserve la distance et le joueur associé
                 dist = distTmp;
-                if (dist < 15){
-                    proche = joueur;
-                }
+                proche = joueur;
             }
         }
+        // On affiche qu'aucun joueur n'a été sélectionné si on n'en a pas eu
         if (proche == null){
             System.out.println("Pas de joueur proche du clic");
-            return null;
         }
+        // On a trouvé un joueur :
+        // On dit qu'il est sélectionné, et on le repeint
         else {
             proche.selected = true;
             proche.paintComponent(g);
-            return proche;
         }
+        // On retourne le joueur
+        return proche;
     }
     
     /**
