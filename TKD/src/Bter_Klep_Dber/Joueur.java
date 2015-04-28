@@ -43,11 +43,11 @@ public class Joueur extends JPanel {
         if (!selected){
             g.setColor(Color.RED);
             //Le centre sous cercle soit sous le curseur.
-            g.fillOval(x-4, y+15, this.getWidth(), this.getHeight());
+            g.fillOval(x, y, this.getWidth(), this.getHeight());
         }
         else {
             g.setColor(Color.BLUE);
-            g.fillOval(x-4, y+15, this.getWidth(), this.getHeight());
+            g.fillOval(x, y, this.getWidth(), this.getHeight());
         }
     }
     

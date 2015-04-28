@@ -303,7 +303,7 @@ public class Terrain extends javax.swing.JFrame {
                 break;
                 case JOUEUR:
                     // Création du nouveau joueur, ajout dans la liste et dessiné
-                    Joueur joueur = new Joueur(evt.getX(),evt.getY());
+                    Joueur joueur = new Joueur(evt.getX()-4,evt.getY()+15);
                     System.out.println("X = " + evt.getX() + ", Y = " + evt.getY());
                     joueurs.add(joueur);
                     paintPlayers();
@@ -313,7 +313,7 @@ public class Terrain extends javax.swing.JFrame {
                     //Il se passe quelque chose
                     // Initialise la route
                     // TO DO : Clique sur un joueur
-                    routeTMP = new Route(evt.getX(),evt.getY());
+                    routeTMP = new Route(evt.getX()-4,evt.getY()+15);
                     routeTMP.dessinerGhost(getGraphics(), evt.getX(), evt.getY());
                     etat = Etat.CLICROUTE;
                     paintRoutes();

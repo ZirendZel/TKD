@@ -23,11 +23,11 @@ public class Route extends JLayeredPane {
     
     public Route(int x, int y) {
         type = "";
-        routePoints.add(new Point(x+4, y-15));
+        routePoints.add(new Point(x-4, y+15));
     }
     
     public void ajouterPoint(Graphics g, int x, int y) {
-        routePoints.add(new Point(x+4, y-15));
+        routePoints.add(new Point(x-4, y+15));
         dessinerTrait(g);
     }
     
@@ -40,7 +40,7 @@ public class Route extends JLayeredPane {
     
     public void dessinerTrait(Graphics g) {
         // Dessin du trait entre les traits déjà dessiné et le point en argument
-        for (int p=0;p<routePoints.size() - 1;p++) {
+        for (int p=0; p < routePoints.size() - 1; p++) {
             g.drawLine(
                 (int)routePoints.get(p).getX(), 
                 (int)routePoints.get(p).getY(),
@@ -50,7 +50,7 @@ public class Route extends JLayeredPane {
     }
     
     public void dessinerGhost(Graphics g, int x, int y) {
-        ghost = new Point(x+4, y+15);
+        ghost = new Point(x+4, y+10);
         super.repaint();
         this.paintComponent(g);
 
@@ -77,8 +77,8 @@ public class Route extends JLayeredPane {
             g.drawLine(
                     (int)point.getX(), 
                     (int)point.getY(),
-                    (int)ghost.getX()+4,
-                    (int)ghost.getY()+15 );            
+                    (int)ghost.getX()-4,
+                    (int)ghost.getY()+14 );            
         }
             
     }
