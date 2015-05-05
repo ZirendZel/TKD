@@ -138,7 +138,13 @@ public class FenetrePrincipale extends javax.swing.JFrame {
                 BufferedImage capture = new Robot().createScreenCapture(rect.getBounds());
                 ImageIcon icon = new ImageIcon(capture);//this.getImage(t.getTerrain())
                 f.getjLabel1().setIcon(icon);
-                ImageIO.write(capture, "png", new File("C:\\Users\\Boris\\Documents\\NetBeansProjects\\TKD\\TKD\\src\\Images\\"+t.getNomDuJeu().toString().replace(" ", "_")+".png"));
+                String nomImage;
+                nomImage = t.getNomDuJeu().getText().replace(" ", "_");
+                System.out.println("nomImage : " + nomImage);
+                if (nomImage != null) {
+                    ImageIO.write(capture, "png", 
+                            new File("C:\\Users\\Boris\\Documents\\NetBeansProjects\\TKD\\TKD\\src\\Images\\" + nomImage + ".png"));
+                }
             } catch(HeadlessException | AWTException | IOException e) {
                 JOptionPane.showMessageDialog(this, e);
             }
