@@ -1,0 +1,9 @@
+Rappel: pour retirer un fichier de l'index, la commande est:
+> git reset HEAD <fichier>
+
+
+> git reset HEAD^1 --soft
+Revient à l'avant dernier commit en supprimant le dernier de l'historique tout en gardant les modifications faites depuis.
+L'option --soft permet de laisser les fichiers du commit dans l'index, pour ne pas se tromper avec d'eventelles modifications faites depuis.
+L'option --hard supprime les modifications.
+A la place de HEAD^1, on peut mettre un numéro de commit.

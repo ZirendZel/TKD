@@ -1,0 +1,179 @@
+    /**
+     * Fonction Vérifiant la validité d'une séquence de lancer
+     * @return boolean.
+     */
+    public final boolean parseSequence() {
+        Iterator<Frame> it = myFrame.iterator();
+        boolean strike = false;
+        boolean spare = false;
+
+        //Parcours des Frames
+        while (it.hasNext()){
+            List<Integer> tmp = new ArrayList<Integer>();
+            tmp = it.next().getEssais();
+
+            //Parcours des Essais (en quelque sorte)
+            if (tmp.get(0) == 10) {
+                //-----------------------------------------------------//
+                //                   --- STRIKE ---                    //
+                //-----------------------------------------------------//
+                strike = true;
+
+                /*
+                Après un strike il ne peut y avoir
+                aucun autre essai dans la même Frame.
+                Possibilité: => tmp[0]=10 tmp[1]=-
+
+                Sauf dans la dernière Frame.
+                */
+
+                if(tmp.size() != 3) {
+                    if (tmp.get(1) != -1) {
+                        /*
+                        Cela signifie que la condition indiquant que
+                        le second essai ne doit pas avoir de valeur
+                        en présence d'un strike, n'a pas été respecté.
+                        */
+
+                        System.out.println("Erreur du 2nd essai" +
+                                " lors d'un Strike");
+                        return false;
+                    }
+                } else {
+                    if(tmp.get(1) == 0) {
+                        /*
+                        Cela signifie que la condition indiquant que
+                        le second essai ne doit pas avoir de valeur
+                        en présence d'un strike, n'a pas été respecté.
+                        */
+
+                        System.out.println("Erreur du 2nd essai" +
+                                " Spare au lieu d'un Strike");
+                        return false;
+                    }
+                }
+                System.out.println("STRIKE");
+            } else {
+                //-----------------------------------------------------//
+                //       --- CAS GENERAL 1: Le Premier Essai ---       //
+                //-----------------------------------------------------//
+
+                /*
+                Les valeurs du 1er essai peuvent varier uniquement entre:
+                1 et 9, (et 10 mais ce cas là est déjà considéré).
+                */
+
+                if(tmp.get(0) != -1) {
+                    if ((tmp.get(0) > 9) || (tmp.get(0) < 1)) {
+                        /*
+                        Cela signifie que la condition indiquant que
+                        le second essai doit posseder une valeur
+                        comprise entre -1 et 9, n'a pas été respecté.
+                        */
+                        System.out.println("Erreur au niveau du 1er essai");
+                        return false;
+                    }
+                }
+
+                //-----------------------------------------------------//
+                //        --- CAS GENERAL 2: Le Second Essai ---       //
+                //-----------------------------------------------------//
+
+                /*
+                Les valeurs du 2nd essai peuvent varier entre:
+                -1 et 9, (-1,0,1-9).
+                (9 est accepté dans le cas où on fait -1 au 1er Essai)
+                */
+
+                if ((tmp.get(1) > 9) || (tmp.get(1) < -1)) {
+                    /*
+                    Cela signifie que le second essai dont la valeur
+                    doit être comprise entre -1 et 9, n'a pas été respecté.
+                    */
+                    System.out.println("Erreur au niveau du 2nd essai");
+                    return false;
+                }
+
+                //-----------------------------------------------------//
+                //        --- CAS GENERAL 3 : la somme des 2 ---       //
+                //-----------------------------------------------------//
+
+                /*
+                La somme des deux essais ne peut être supérieure à 9
+                */
+
+                if((tmp.get(0) + tmp.get(1)) > 9) {
+                    /*
+                    Cela signifie que le nombre total de quilles,
+                    à savoir 10, n'a pas été respecté.
+                    */
+                    System.out.println("Erreur au niveau de la somme " +
+                            "des 2 essais");
+                    return false;
+                }
+
+                //-----------------------------------------------------//
+                //                   --- SPARE ---                     //
+                //-----------------------------------------------------//
+
+                /*
+                Dans le cas d'un spare, le premier essai ne peut être
+                qu'une valeur comprise entre 1 et 9,
+                pour que la somme avec le second essai puisse faire 10.
+                Possibilité: => tmp[1]=0 tmp[0]=-1,1-9
+
+                PS: Section prise en compte dans les 'cas général' 1 et 2.
+                //... tmp[0] n'est pas compris entre 1-9
+                //ou est différent de -1, alors false
+                if(tmp[1] == 0) {
+                    //... tmp[0] n'est pas compris entre 1-9
+                    //ou est différent de -1, alors false
+                    if(!((tmp[0] <= 9) && (tmp[0] >= 1)) || tmp[0] != -1) {
+                        spare = true;
+                        return false;
+                    }
+                }
+                */
+
+                if(tmp.get(1) == 0) {
+                    /*
+                    Nous sommes en présence d'un spare.
+                    */
+                    System.out.println("SPARE");
+                    spare = true;
+                }
+            } //Fin_if-else
+
+            //-----------------------------------------------------//
+            //               --- La 10ème Frame ---                //
+            //-----------------------------------------------------//
+
+            /*
+            Dans le cas d'un strike ou d'un spare lors des 2 derniers lancers,
+            le troisième essai ne peut posséder que les valeur suivantes:
+            Possibilité: => tmp[2]=-1,1-10 => PAS 0
+            (-1 est accepté dans le cas où le joueur echoue son coup bonus)
+            */
+            if(tmp.size() == 3) {
+                if(strike || spare) {
+                    if(tmp.get(2) != -1 ) {
+                        if ((tmp.get(2) > 10) || (tmp.get(2) < 1)) {
+                            /*
+                            Cela signifie que le troisième coup "bonus"
+                            de la 10ème Frame n'a pas été pris en compte.
+                            */
+                            System.out.println("Erreur au niveau du dernier " +
+                                    "essai de la 10ème Frame");
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            //Réinitialisation de strike et spare.
+            strike = false;
+            spare = false;
+        } //Fin_while
+
+        return true;
+    } //Fin_parseSequence

@@ -1,0 +1,18 @@
+    /**
+     * La fonction parse séquence avec
+     * les fonction de la classe Frame.
+     */
+    public final boolean parseSequence() {
+        /**
+         *
+         * for( i de 0 à size-1)
+         *  if( verifEssai() &&  verif2())
+         *   return true
+         *
+         * if( verifEssai() &&  verif3())
+         *   return true
+         *
+         *
+         */
+        return false;
+    }
