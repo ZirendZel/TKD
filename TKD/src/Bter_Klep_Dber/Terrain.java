@@ -4,7 +4,6 @@ package Bter_Klep_Dber;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.VK_ENTER;
 import java.awt.event.MouseEvent;
 import static java.lang.Math.sqrt;
@@ -25,7 +24,7 @@ import javax.swing.JTextField;
  *
  * @author Zirend
  */
-public class Terrain extends javax.swing.JFrame {
+public class Terrain extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Field
