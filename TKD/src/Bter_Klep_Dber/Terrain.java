@@ -548,8 +548,6 @@ public class Terrain extends javax.swing.JInternalFrame {
     }
     
     void paintPlayers(){
-        // Pour chaque joueur, on dit qu'ils ne sont pas sélectionnés
-        // et on les peint avec paintComponent
         for (Joueur joueur : joueurs) {
             joueur.repaint();
             joueur.selected = false;

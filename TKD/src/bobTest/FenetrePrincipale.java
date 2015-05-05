@@ -138,7 +138,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
                 BufferedImage capture = new Robot().createScreenCapture(rect.getBounds());
                 ImageIcon icon = new ImageIcon(capture);//this.getImage(t.getTerrain())
                 f.getjLabel1().setIcon(icon);
-                ImageIO.write(capture, "png", new File("C:\\Users\\Boris\\Documents\\NetBeansProjects\\TKD\\TKD\\src\\Images\\"+t.getNomDuJeu()+".png"));
+                ImageIO.write(capture, "png", new File("C:\\Users\\Boris\\Documents\\NetBeansProjects\\TKD\\TKD\\src\\Images\\"+t.getNomDuJeu().toString().replace(" ", "_")+".png"));
             } catch(HeadlessException | AWTException | IOException e) {
                 JOptionPane.showMessageDialog(this, e);
             }
@@ -150,6 +150,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     }//GEN-LAST:event_Frame1ActionPerformed
 
     private void terrainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terrainActionPerformed
+        jDesktop.add(t);
         t.setEnabled(true);
         t.setVisible(true);
     }//GEN-LAST:event_terrainActionPerformed
