@@ -21,8 +21,8 @@ public class Joueur extends JPanel {
     boolean selected;
     
     public Joueur(int x, int y) {
-        this.x = x;
-        this.y = y;
+        this.x = x - 4;
+        this.y = y + 15;
         selected = false;
         this.setSize(16,16);
         poste = "";
@@ -52,8 +52,8 @@ public class Joueur extends JPanel {
     }
     
     public void setCoord(int x, int y){
-        this.x = x;
-        this.y = y;
+        this.x = x - 4;
+        this.y = y + 15;
     }
         
 }

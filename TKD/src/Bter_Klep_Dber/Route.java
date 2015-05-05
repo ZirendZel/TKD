@@ -16,22 +16,23 @@ import javax.swing.JLayeredPane;
  * @author kevin
  */
 public class Route extends JLayeredPane {
-    String type;
+    TypeRoute type;
     Color couleur;
     ArrayList<Point> routePoints = new ArrayList<>();
     public Point ghost;
     
     public Route(int x, int y) {
-        type = "";
-        routePoints.add(new Point(x-4, y+15));
+        type = TypeRoute.NORMALE;
+        routePoints.add(new Point(x+3, y+23));
     }
     
     public void ajouterPoint(Graphics g, int x, int y) {
-        routePoints.add(new Point(x-4, y+15));
+        routePoints.add(new Point(x+3, y+23));
         dessinerTrait(g);
     }
     
     public void retirerPoint(Graphics g) {
+
         if (routePoints.size() > 0) {
             routePoints.remove(routePoints.size() - 1);
             dessinerTrait(g);
@@ -50,8 +51,8 @@ public class Route extends JLayeredPane {
     }
     
     public void dessinerGhost(Graphics g, int x, int y) {
-        ghost = new Point(x+4, y+10);
-        super.repaint();
+        ghost = new Point(x+3, y+23);
+        //super.repaint();
         this.paintComponent(g);
 
 
@@ -59,11 +60,22 @@ public class Route extends JLayeredPane {
     
     @Override
     public void paintComponent(Graphics g){
-        super.paintComponent(g);
-
-                
-        // TO DO : Selon le type de route, on changera la couleur où le type de trait dessiner
-        //g.setColor(Color.RED);
+        
+        // Selon le type de la course la couleur des traits change et est spécifique uà un type de course.
+        switch (type) {
+            case NORMALE:
+                g.setColor(Color.YELLOW);
+            break;
+            case HOT:
+                g.setColor(Color.ORANGE);
+            break;
+            case BLOCK:
+                g.setColor(Color.GRAY);
+            break;
+            case MOTION:
+                g.setColor(Color.BLUE);
+            break;
+        }
         
         for (int p=0;p<routePoints.size() - 1;p++) {
             g.drawLine(
@@ -77,13 +89,14 @@ public class Route extends JLayeredPane {
             g.drawLine(
                     (int)point.getX(), 
                     (int)point.getY(),
-                    (int)ghost.getX()-4,
-                    (int)ghost.getY()+14 );            
+                    (int)ghost.getX(),
+                    (int)ghost.getY());
         }
-            
+        //super.paintComponent(g);
+        this.repaint();
     }
     
-    public void setType(String t) {
+    public void setType(TypeRoute t) {
         type = t;
     }
     
