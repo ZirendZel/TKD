@@ -38,6 +38,7 @@ public class Terrain extends javax.swing.JInternalFrame {
         nomDuJeu.setBackground(new Color(0, 0, 0, 0));
         nomDuJeu.setBorder(null);
         nomDuJeu.setOpaque(false);
+        nomDuJeu.setMaximumSize(nomDuJeu.getMaximumSize());
         
         routeTMP = null;
     }
@@ -614,20 +615,18 @@ public class Terrain extends javax.swing.JInternalFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Terrain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Terrain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Terrain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Terrain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
         
+        //</editor-fold>
+        //</editor-fold>
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Terrain().setVisible(true);
             }
@@ -649,6 +648,10 @@ public class Terrain extends javax.swing.JInternalFrame {
     private javax.swing.JLayeredPane terrain;
     private javax.swing.JLayeredPane terrainVide;
     // End of variables declaration//GEN-END:variables
+
+    public JTextField getNomDuJeu() {
+        return nomDuJeu;
+    }
 
     public Etat getEtat() {
         return etat;
