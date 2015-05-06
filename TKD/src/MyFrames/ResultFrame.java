@@ -11,12 +11,12 @@ import javax.swing.JLabel;
  *
  * @author Boris
  */
-public class Frame1 extends javax.swing.JInternalFrame {
+public class ResultFrame extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Frame1
      */
-    public Frame1() {
+    public ResultFrame() {
         initComponents();
         this.setResizable(true);
     }
@@ -31,10 +31,10 @@ public class Frame1 extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         Panneau = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        afficheImage = new javax.swing.JLabel();
 
         setClosable(true);
-        setTitle("Frame1");
+        setTitle("Result");
 
         javax.swing.GroupLayout PanneauLayout = new javax.swing.GroupLayout(Panneau);
         Panneau.setLayout(PanneauLayout);
@@ -42,13 +42,13 @@ public class Frame1 extends javax.swing.JInternalFrame {
             PanneauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 639, Short.MAX_VALUE)
             .addGroup(PanneauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE))
+                .addComponent(afficheImage, javax.swing.GroupLayout.DEFAULT_SIZE, 720, Short.MAX_VALUE))
         );
         PanneauLayout.setVerticalGroup(
             PanneauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 420, Short.MAX_VALUE)
             .addGroup(PanneauLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE))
+                .addComponent(afficheImage, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -68,10 +68,12 @@ public class Frame1 extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Panneau;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel afficheImage;
     // End of variables declaration//GEN-END:variables
 
-    public JLabel getjLabel1() {
-        return jLabel1;
+    public JLabel getAfficheImage() {
+        return afficheImage;
     }
+
+
 }

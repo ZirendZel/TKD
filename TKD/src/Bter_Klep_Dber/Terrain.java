@@ -79,7 +79,8 @@ public class Terrain extends javax.swing.JInternalFrame {
         terrain = new javax.swing.JLayeredPane();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         boutonJoueur.setText("Joueur");
         boutonJoueur.addActionListener(new java.awt.event.ActionListener() {

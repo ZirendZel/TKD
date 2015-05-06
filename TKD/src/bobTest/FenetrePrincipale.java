@@ -1,12 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package bobTest;
 
 import Bter_Klep_Dber.Terrain;
-import MyFrames.Frame1;
+import MyFrames.Popup;
+import MyFrames.ResultFrame;
 import java.awt.AWTException;
 import java.awt.Component;
 import java.awt.Graphics2D;
@@ -17,6 +18,8 @@ import java.awt.Robot;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -26,17 +29,50 @@ import javax.swing.JOptionPane;
  * @author Boris
  */
 public class FenetrePrincipale extends javax.swing.JFrame {
-    Terrain t = new Terrain();  
-    Frame1 f = new Frame1();
+    
+    //-----------------------------------//
+    //-------- Variables Globales -------//
+    //-----------------------------------//
+    
+    protected final Terrain t;
+    protected final ResultFrame f;
+    private Popup p;
+    
+    //-----------------------------------//
+    //-------- GETTERS & SETTERS --------//
+    //-----------------------------------//
+    
+    /**
+     * 
+     * @return un terrain.
+     */
+    public Terrain getT() {
+        return t;
+    }
 
+    /**
+     * 
+     * @return une Frame Resultat
+     */
+    public ResultFrame getF() {
+        return f;
+    }
+    
+    //-----------------------------------//
+    //----------- CONSTRUCTEUR ----------//
+    //-----------------------------------//
+    
     /**
      * Creates new form FenetrePrincipale
      */
     public FenetrePrincipale() {
         initComponents();
         this.setResizable(true);
+        t = new Terrain();
+        f = new ResultFrame();
+        //p = new Popup(t,f);
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -49,11 +85,15 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         jDesktop = new javax.swing.JDesktopPane();
         MenuBar = new javax.swing.JMenuBar();
         File = new javax.swing.JMenu();
-        Save = new javax.swing.JMenuItem();
-        Exit = new javax.swing.JMenuItem();
-        MenuFrame = new javax.swing.JMenu();
-        Frame1 = new javax.swing.JMenuItem();
         terrain = new javax.swing.JMenuItem();
+        openProject = new javax.swing.JMenuItem();
+        saveProject = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        exportAsImage = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        exit = new javax.swing.JMenuItem();
+        MenuFrame = new javax.swing.JMenu();
+        resultFrame = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,52 +101,73 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         jDesktop.setLayout(jDesktopLayout);
         jDesktopLayout.setHorizontalGroup(
             jDesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
+            .addGap(0, 1000, Short.MAX_VALUE)
         );
         jDesktopLayout.setVerticalGroup(
             jDesktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addGap(0, 779, Short.MAX_VALUE)
         );
 
         File.setText("File");
 
-        Save.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        Save.setText("Save");
-        Save.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SaveActionPerformed(evt);
-            }
-        });
-        File.add(Save);
-
-        Exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.CTRL_MASK));
-        Exit.setText("Exit");
-        Exit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ExitActionPerformed(evt);
-            }
-        });
-        File.add(Exit);
-
-        MenuBar.add(File);
-
-        MenuFrame.setText("Frame");
-
-        Frame1.setText("Frame1");
-        Frame1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Frame1ActionPerformed(evt);
-            }
-        });
-        MenuFrame.add(Frame1);
-
-        terrain.setText("Terrain");
+        terrain.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        terrain.setText("New game");
         terrain.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 terrainActionPerformed(evt);
             }
         });
-        MenuFrame.add(terrain);
+        File.add(terrain);
+
+        openProject.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        openProject.setText("Open game...");
+        openProject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openProjectActionPerformed(evt);
+            }
+        });
+        File.add(openProject);
+
+        saveProject.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveProject.setText("Save game...");
+        saveProject.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveProjectActionPerformed(evt);
+            }
+        });
+        File.add(saveProject);
+        File.add(jSeparator1);
+
+        exportAsImage.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
+        exportAsImage.setText("Export as image...");
+        exportAsImage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportAsImageActionPerformed(evt);
+            }
+        });
+        File.add(exportAsImage);
+        File.add(jSeparator2);
+
+        exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.CTRL_MASK));
+        exit.setText("Exit");
+        exit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitActionPerformed(evt);
+            }
+        });
+        File.add(exit);
+
+        MenuBar.add(File);
+
+        MenuFrame.setText("Result");
+
+        resultFrame.setText("Show Result");
+        resultFrame.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resultFrameActionPerformed(evt);
+            }
+        });
+        MenuFrame.add(resultFrame);
 
         MenuBar.add(MenuFrame);
 
@@ -126,34 +187,21 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
+    private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_ExitActionPerformed
+    }//GEN-LAST:event_exitActionPerformed
 
-    private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
-            try {
-                
-                Rectangle rect = new Rectangle(t.getX(),t.getY(),t.getWidth(),t.getHeight());
-                //t.getX(), t.getY(), t.getWidth(), t.getHeight()
-                BufferedImage capture = new Robot().createScreenCapture(rect.getBounds());
-                ImageIcon icon = new ImageIcon(capture);//this.getImage(t.getTerrain())
-                f.getjLabel1().setIcon(icon);
-                String nomImage;
-                nomImage = t.getNomDuJeu().getText().replace(" ", "_");
-                System.out.println("nomImage : " + nomImage);
-                if (nomImage != null) {
-                    ImageIO.write(capture, "png", 
-                            new File("C:\\Users\\Boris\\Documents\\NetBeansProjects\\TKD\\TKD\\src\\Images\\" + nomImage + ".png"));
-                }
-            } catch(HeadlessException | AWTException | IOException e) {
-                JOptionPane.showMessageDialog(this, e);
-            }
-    }//GEN-LAST:event_SaveActionPerformed
+    private void exportAsImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportAsImageActionPerformed
+        p = new Popup(this);
+        jDesktop.add(p);
+        p.show();
+        p.toFront();   
+    }//GEN-LAST:event_exportAsImageActionPerformed
 
-    private void Frame1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Frame1ActionPerformed
+    private void resultFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resultFrameActionPerformed
         jDesktop.add(f);
-        f.setVisible(true);
-    }//GEN-LAST:event_Frame1ActionPerformed
+        f.show();
+    }//GEN-LAST:event_resultFrameActionPerformed
 
     private void terrainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_terrainActionPerformed
         jDesktop.add(t);
@@ -161,6 +209,14 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         t.setVisible(true);
     }//GEN-LAST:event_terrainActionPerformed
 
+    private void saveProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveProjectActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_saveProjectActionPerformed
+
+    private void openProjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openProjectActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_openProjectActionPerformed
+    
     
     public Image getImage(Component component){
         if(component==null){return null;}
@@ -182,8 +238,8 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+        */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -201,7 +257,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(FenetrePrincipale.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -211,13 +267,17 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem Exit;
     private javax.swing.JMenu File;
-    private javax.swing.JMenuItem Frame1;
     private javax.swing.JMenuBar MenuBar;
     private javax.swing.JMenu MenuFrame;
-    private javax.swing.JMenuItem Save;
+    private javax.swing.JMenuItem exit;
+    private javax.swing.JMenuItem exportAsImage;
     private javax.swing.JDesktopPane jDesktop;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JMenuItem openProject;
+    private javax.swing.JMenuItem resultFrame;
+    private javax.swing.JMenuItem saveProject;
     private javax.swing.JMenuItem terrain;
     // End of variables declaration//GEN-END:variables
 }
