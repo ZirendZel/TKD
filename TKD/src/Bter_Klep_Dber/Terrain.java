@@ -151,14 +151,14 @@ public class Terrain extends javax.swing.JInternalFrame {
         );
 
         jLayeredPane4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jLayeredPane4MouseReleased(evt);
-            }
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLayeredPane4MouseClicked(evt);
             }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 jLayeredPane4MousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jLayeredPane4MouseReleased(evt);
             }
         });
         jLayeredPane4.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
@@ -167,11 +167,6 @@ public class Terrain extends javax.swing.JInternalFrame {
             }
             public void mouseMoved(java.awt.event.MouseEvent evt) {
                 jLayeredPane4MouseMoved(evt);
-            }
-        });
-        jLayeredPane4.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jLayeredPane4KeyPressed(evt);
             }
         });
 
@@ -270,6 +265,9 @@ public class Terrain extends javax.swing.JInternalFrame {
             case ROUTE:
             //Interdit
             break;
+            case CLICROUTE:
+            //Impossible    
+            break;      
             case DRAG:
             //Interdit
             break;
@@ -289,6 +287,9 @@ public class Terrain extends javax.swing.JInternalFrame {
                 etat = Etat.JOUEUR;
                 activerJoueur();
             break;
+            case CLICROUTE:
+            //Interdit   
+            break;   
             case DRAG:
             //Interdit
             break;
@@ -300,34 +301,47 @@ public class Terrain extends javax.swing.JInternalFrame {
             // Clic gauche
             switch(etat){
                 case INIT:
-                //Interdit
+                    etat = Etat.INIT;
                 break;
                 case JOUEUR:
                     // Création du nouveau joueur, ajout dans la liste et dessiné
-                    Joueur joueur = new Joueur(evt.getX(),evt.getY());
-                    System.out.println("X = " + evt.getX() + ", Y = " + evt.getY());
-                    joueurs.add(joueur);
-                    paintPlayers();
-                    paintRoutes();
+                    etat = Etat.JOUEUR;
+                    if (joueurs.size() < 11) {
+                        Joueur joueur = new Joueur(evt.getX(),evt.getY());
+                        System.out.println("X = " + evt.getX() + ", Y = " + evt.getY());
+                        joueurs.add(joueur);
+                        paintPlayers();
+                        paintRoutes();
+                        System.out.println("X = " + joueur.getX() + ", Y = " + joueur.getY());
+                    }
+                    else {
+                        System.out.println("Il y a déjà 11 joueurs sur le terrain.");
+                    }
+                    activerJoueur();
                 break;
                 case ROUTE:
-                    //Il se passe quelque chose
-                    // Initialise la route
-                    // TO DO : Clique sur un joueur
-                    routeTMP = new Route(evt.getX(),evt.getY());
-                    routeTMP.dessinerGhost(getGraphics(), evt.getX(), evt.getY());
-                    etat = Etat.CLICROUTE;
-                    paintRoutes();
+                    Joueur jp = joueurProche(evt.getX(),evt.getY());
+                    if (jp != null) {
+                        routeTMP = new Route(jp.getX(),jp.getY());
+                        routeTMP.dessinerGhost(getGraphics(), evt.getX(), evt.getY());
+                        etat = Etat.CLICROUTE;
+                        activerClicRoute();
+                        paintRoutes();
+                    }
+                    else {
+                        System.out.println("Pas de joueur proche pour tracer sa route");
+                    }
                 break;
                 case CLICROUTE:
                     // Les autres clics prolongent la route qu'on créé
                     etat = Etat.CLICROUTE;
                     routeTMP.ajouterPoint(getGraphics(), evt.getX(),evt.getY());
                     routeTMP.dessinerGhost(getGraphics(), evt.getX(), evt.getY());
+                    paintPlayers();
                     paintRoutes();
                 break;
                 case DRAG:
-                //Interdit
+                    // Impossible
                 break;
             }
         }
@@ -335,20 +349,22 @@ public class Terrain extends javax.swing.JInternalFrame {
             // clic milieu / molette
             switch(etat){
                 case INIT:
-                //Interdit
+                    etat = Etat.INIT;
                 break;
                 case JOUEUR:
-                    // interdit
+                    etat = Etat.JOUEUR;
+                    activerJoueur();
                 break;
                 case ROUTE:
-                //Il se passe quelque chose
+                    etat = Etat.ROUTE;
+                    activerRoute();
                 break;
                 case CLICROUTE:
-                    System.out.println("jLayeredPane4KeyPressed");
                     routeTMP.ghost = null;
                     routes.add(routeTMP);
                     routeTMP = null;
                     etat = Etat.ROUTE;
+                    activerRoute();
                     paintRoutes();
                 break;
                 case DRAG:
@@ -360,25 +376,31 @@ public class Terrain extends javax.swing.JInternalFrame {
             // clic droit
             switch(etat){
                 case INIT:
-                //Interdit
+                    etat = Etat.INIT;
                 break;
                 case JOUEUR:
                     // Le joueur le proche proche du clic droit est sélectionné
+                    etat = Etat.JOUEUR;
                     System.out.println("X = " + evt.getX() + ", Y = " + evt.getY());
                     joueurProche(evt.getX(),evt.getY());
                     paintRoutes();
+                    activerJoueur();
                 break;
                 case ROUTE:
-                //Il se passe quelque chose
+                    etat = Etat.ROUTE;
+                    activerRoute();
                 break;
                 case CLICROUTE:
-                    etat = Etat.CLICROUTE;
                     routeTMP.retirerPoint(getGraphics());
                     if (routeTMP.routePoints.isEmpty()) {
                         etat = Etat.ROUTE;
+                        activerRoute();
                     } else {
                         routeTMP.dessinerGhost(getGraphics(), evt.getX(), evt.getY());
+                        etat = Etat.CLICROUTE;
+                        activerClicRoute();
                     }
+                    paintPlayers();
                     paintRoutes();
                 case DRAG:
                 //Interdit
@@ -393,44 +415,23 @@ public class Terrain extends javax.swing.JInternalFrame {
             // Si le fond est actif, on le desactive, et on le rend invisible
             // L'inverse sinon
             case INIT:
-                if (fondActif){
-                    fondActif = false;
-                    terrain.setVisible(fondActif);
-                    paintPlayers();
-                }
-                else{
-                    fondActif = true;
-                    terrain.setVisible(fondActif);
-                    paintPlayers();
-                }
+                etat = Etat.INIT;
+                activerTerrain();
                 break;
             case JOUEUR:
-                if (fondActif){
-                    fondActif = false;
-                    terrain.setVisible(fondActif);
-                    paintPlayers();
-                }
-                else{
-                    fondActif = true;
-                    terrain.setVisible(fondActif);
-                    paintPlayers();
-                }
+                etat = Etat.JOUEUR;
+                activerTerrain();
                 break;
             case ROUTE:
-                if (fondActif){
-                    fondActif = false;
-                    terrain.setVisible(fondActif);
-                    paintPlayers();
-                }
-                else{
-                    fondActif = true;
-                    terrain.setVisible(fondActif);
-                    paintPlayers();
-                }
+                etat = Etat.ROUTE;
+                activerTerrain();
                 break;
+            case CLICROUTE:
+                //Impossible    
+            break;   
             case DRAG:
                 //Impossible
-                break;
+            break;
         }
     }//GEN-LAST:event_boutonFondActionPerformed
 
@@ -445,10 +446,15 @@ public class Terrain extends javax.swing.JInternalFrame {
                 break;
             case JOUEUR:
                 etat = Etat.JOUEUR;
+                activerJoueur();
                 break;
             case ROUTE:
                 etat = Etat.ROUTE;
+                activerRoute();
                 break;
+            case CLICROUTE:
+                //Impossible    
+                break;   
             case DRAG:
                 // En relachant, on change les coordonnées du joueurs
                 // On le déselectionne
@@ -459,6 +465,7 @@ public class Terrain extends javax.swing.JInternalFrame {
                 paintPlayers();
                 paintRoutes();
                 etat = Etat.JOUEUR;
+                activerJoueur();
                 break;
         }
     }//GEN-LAST:event_jLayeredPane4MouseReleased
@@ -473,17 +480,20 @@ public class Terrain extends javax.swing.JInternalFrame {
                 break;
             case JOUEUR:
                 etat = Etat.JOUEUR;
+                activerJoueur();
                 jLabel3.setText("" + evt.getX());
                 jLabel5.setText("" + evt.getY());
                 break;
             case ROUTE:
                 etat = Etat.ROUTE;
+                activerRoute();
                 jLabel3.setText("" + evt.getX());
                 jLabel5.setText("" + evt.getY());
                 break;
             case CLICROUTE:
                 etat = Etat.CLICROUTE;
-                super.repaint();
+                activerClicRoute();
+                repaint();
                 routeTMP.dessinerGhost(getGraphics(), evt.getX(), evt.getY());
                 paintPlayers();
                 break;
@@ -493,6 +503,7 @@ public class Terrain extends javax.swing.JInternalFrame {
                 // On dessine les joueurs à chaque nouveau déplacement
                 repaint();
                 etat = Etat.DRAG;
+                activerDrag();
                 enDeplacement.setCoord(evt.getX(),evt.getY());
                 paintPlayers();
                 break;
@@ -516,36 +527,55 @@ public class Terrain extends javax.swing.JInternalFrame {
             // Clic gauche
             switch(etat){
                 case INIT:
-                //Interdit
+                    // Interdit
                 break;
                 case JOUEUR:
                     enDeplacement = joueurProche(evt.getX(),evt.getY());
-                    if (enDeplacement != null)
+                    if (enDeplacement != null){
                         etat = Etat.DRAG;
+                        activerDrag();
+                    }
+                    else{
+                        etat = Etat.JOUEUR;
+                        activerJoueur();
+                    }
                 break;
                 case ROUTE:
-                    //Il se passe quelque chose
+                    //Interdit
                 break;
+                case CLICROUTE:
+                    //Interdit    
+                break;   
                 case DRAG:
-                //Interdit
+                    //Interdit
                 break;
             }
         }
     }//GEN-LAST:event_jLayeredPane4MousePressed
 
-    private void jLayeredPane4KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jLayeredPane4KeyPressed
-        // TO DELETE
-    }//GEN-LAST:event_jLayeredPane4KeyPressed
-
     
     void activerJoueur(){
         boutonJoueur.setEnabled(false);
         boutonRoute.setEnabled(true);
+        boutonFond.setEnabled(true);
     }
     
     void activerRoute(){
         boutonJoueur.setEnabled(true);
         boutonRoute.setEnabled(false);
+        boutonFond.setEnabled(true);
+    }
+    
+    void activerClicRoute(){
+        boutonJoueur.setEnabled(false);
+        boutonRoute.setEnabled(false);
+        boutonFond.setEnabled(false);
+    }
+    
+    void activerDrag(){
+        boutonJoueur.setEnabled(false);
+        boutonRoute.setEnabled(false);
+        boutonFond.setEnabled(false);
     }
     
     void paintPlayers(){
@@ -565,6 +595,19 @@ public class Terrain extends javax.swing.JInternalFrame {
         }
     }
     
+    void activerTerrain(){
+        if (fondActif){
+            fondActif = false;
+            terrain.setVisible(fondActif);
+            paintPlayers();
+        }
+        else{
+            fondActif = true;
+            terrain.setVisible(fondActif);
+            paintPlayers();
+        }
+    }
+    
     Joueur joueurProche(int x, int y){
         // Par défaut, la distance est 15 (histoire de ne pas attraper un joueur de trop loin)
         double dist = 15;
@@ -576,7 +619,7 @@ public class Terrain extends javax.swing.JInternalFrame {
             joueur.selected = false;
             joueur.paintComponent(g);
             // On fait la distance euclidienne
-            double distTmp = sqrt((joueur.x-x)*(joueur.x-x)+((joueur.y-y)*(joueur.y-y)));
+            double distTmp = sqrt((joueur.x-(x-3))*(joueur.x-(x-3))+((joueur.y-(y+15))*(joueur.y-(y+15))));
             // Si cette distance euclidienne est plus petite que la distance la plus petite précédente :
             if (distTmp < dist){
                 // On conserve la distance et le joueur associé

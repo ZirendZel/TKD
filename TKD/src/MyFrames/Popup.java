@@ -143,12 +143,16 @@ public class Popup extends javax.swing.JInternalFrame {
             ImageIcon icon = new ImageIcon(capture);
             
             // 3. Enregistrement dans le dossier 'Images'
-            ImageIO.write(capture, "png",
+            /*ImageIO.write(capture, "png",
                     new File("C:\\Users\\Boris\\Documents"
                             + "\\NetBeansProjects"
                             + "\\TKD\\TKD\\src\\Images\\"
+                            + nomDuJeu + ".png"));*/
+            ImageIO.write(capture, "png",
+                    new File("C:\\Users\\Zirend\\Documents"
+                            + "\\NetBeansProjects"
+                            + "\\TKD\\TKD\\src\\Images\\"
                             + nomDuJeu + ".png"));
-            
             
             // 4. Affichage de l'image dans la 'ResultFrame',
             //pour voir ce que ça donne et éviter de devoir

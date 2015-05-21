@@ -23,7 +23,7 @@ public class Route extends JLayeredPane {
     
     public Route(int x, int y) {
         type = TypeRoute.NORMALE;
-        routePoints.add(new Point(x+3, y+23));
+        routePoints.add(new Point(x+7, y+7));
     }
     
     public void ajouterPoint(Graphics g, int x, int y) {
